@@ -3,6 +3,7 @@ import { Manrope, Newsreader } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { WhatsappButton } from "@/components/whatsapp-button";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 const newsreader = Newsreader({ subsets: ["latin"], variable: "--font-newsreader" });
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Header />
         {children}
         <Footer />
+        <WhatsappButton />
       </body>
     </html>
   );

@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Quote } from "lucide-react";
-import { CtaBand, SolutionsGrid, StatsBand } from "@/components/sections";
+import { CtaBand, StatsBand } from "@/components/sections";
 import { HomeHero } from "@/components/home-hero";
+import { SolutionsCarousel } from "@/components/solutions-carousel";
 import { projects } from "@/data/site";
 
 export default function Home() {
@@ -42,7 +43,9 @@ export default function Home() {
               Every proposal is shaped around available space, electrical demand, tariff structure, installation access, and future maintenance.
             </p>
           </div>
-          <SolutionsGrid />
+          <div className="w-[100vw] relative left-1/2 -translate-x-1/2 overflow-hidden sm:w-auto sm:static sm:left-auto sm:translate-x-0 sm:overflow-visible mt-8">
+            <SolutionsCarousel />
+          </div>
         </div>
       </section>
 

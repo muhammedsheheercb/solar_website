@@ -27,18 +27,31 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    if (open) closeButtonRef.current?.focus();
+    let timeout: NodeJS.Timeout;
+    if (open) {
+      document.body.style.overflow = "hidden";
+      closeButtonRef.current?.focus();
+    } else {
+      timeout = setTimeout(() => {
+        document.body.style.overflow = "";
+      }, 300);
+    }
+
     const onKey = (event: KeyboardEvent) => event.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
+    
     return () => {
-      document.body.style.overflow = "";
+      clearTimeout(timeout);
       window.removeEventListener("keydown", onKey);
+      if (open) {
+        document.body.style.overflow = "";
+      }
     };
   }, [open]);
 
   return (
-    <header className={cn("fixed inset-x-0 top-0 z-50 transition-all duration-300", scrolled ? "bg-[#fbfaf4]/94 shadow-sm ring-1 ring-border/80 backdrop-blur h-[70px]" : "h-[88px] bg-[#081c17]/28")}>
+    <>
+      <header className={cn("fixed inset-x-0 top-0 z-50 transition-all duration-300", scrolled ? "bg-[#fbfaf4]/94 shadow-sm ring-1 ring-border/80 backdrop-blur h-[70px]" : "h-[88px] bg-[#081c17]/28")}>
       <div className="container flex h-full items-center justify-between">
         <Link href="/" className={cn("flex min-w-0 items-center gap-3 font-extrabold", scrolled ? "text-primary" : "text-white")}>
           <span className="grid size-10 shrink-0 place-items-center bg-accent text-primary">
@@ -80,10 +93,11 @@ export function Header() {
           <Menu size={22} />
         </button>
       </div>
+      </header>
 
-      <div className={cn("fixed inset-0 z-50 transition lg:hidden", open ? "pointer-events-auto" : "pointer-events-none")}>
-        <button aria-label="Close menu overlay" className={cn("absolute inset-0 bg-black/35 transition-opacity", open ? "opacity-100" : "opacity-0")} onClick={() => setOpen(false)} />
-        <aside role="dialog" aria-modal="true" aria-hidden={!open} aria-label="Main navigation" className={cn("absolute right-0 top-0 h-full w-[90vw] max-w-[420px] bg-[#fbfaf4] text-foreground transition duration-300", open ? "visible translate-x-0" : "invisible translate-x-full")}>
+      <div className={cn("fixed inset-0 z-[100] transition-all lg:hidden", open ? "pointer-events-auto visible" : "pointer-events-none invisible delay-300")}>
+        <button aria-label="Close menu overlay" className={cn("absolute inset-0 bg-black/35 transition-opacity duration-300", open ? "opacity-100" : "opacity-0")} onClick={() => setOpen(false)} />
+        <aside role="dialog" aria-modal="true" aria-hidden={!open} aria-label="Main navigation" className={cn("absolute right-0 top-0 h-[100dvh] w-[90vw] max-w-[420px] bg-[#fbfaf4] text-foreground transition-transform duration-300 ease-out", open ? "translate-x-0 shadow-[-10px_0_40px_rgba(0,0,0,0.1)]" : "translate-x-full shadow-none")}>
           <div className="flex h-full flex-col">
             <div className="flex h-20 items-center justify-between border-b border-border px-6">
               <Link href="/" className="flex min-w-0 items-center gap-3 font-extrabold text-primary" onClick={() => setOpen(false)}>
@@ -119,6 +133,6 @@ export function Header() {
           </div>
         </aside>
       </div>
-    </header>
+    </>
   );
 }

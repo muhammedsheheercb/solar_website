@@ -4,6 +4,7 @@ import { ArrowRight, Quote } from "lucide-react";
 import { CtaBand, StatsBand } from "@/components/sections";
 import { HomeHero } from "@/components/home-hero";
 import { SolutionsCarousel } from "@/components/solutions-carousel";
+import { ReviewsSection } from "@/components/reviews-section";
 import { projects } from "@/data/site";
 
 export default function Home() {
@@ -81,21 +82,7 @@ export default function Home() {
 
       <CtaBand />
 
-      <section className="section-pad bg-[#151a17] text-white">
-        <div className="container editorial-grid">
-          <div className="col-span-12 lg:col-span-4">
-            <p className="eyebrow text-accent">Client Perspective</p>
-            <h2 className="section-title mt-4">A calmer way to make a solar decision.</h2>
-          </div>
-          <div className="col-span-12 lg:col-span-7 lg:col-start-6">
-            <Quote className="text-accent" size={34} />
-            <p className="mt-8 font-display text-[clamp(2rem,4vw,4rem)] font-medium leading-tight">
-              “The team made the project feel controlled from the first survey. The numbers were clear, the site work was tidy, and the handover documentation gave our facilities team real confidence.”
-            </p>
-            <p className="mt-8 font-semibold text-white/70">Operations Head, industrial manufacturing client</p>
-          </div>
-        </div>
-      </section>
+      <ReviewsSection />
 
       <section className="section-pad">
         <div className="container editorial-grid items-center">

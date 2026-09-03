@@ -1,10 +1,36 @@
 "use client";
 
+import { useState } from "react";
 import { PageHero } from "@/components/sections";
 import { motion } from "motion/react";
-import { MapPin, Mail, Phone, Clock, ArrowRight } from "lucide-react";
+import { MapPin, Mail, Phone, Clock, ArrowRight, CheckCircle } from "lucide-react";
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    city: "",
+    bill: "Under ₹5,000",
+    notes: ""
+  });
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    // Simulate submission flow
+    setTimeout(() => {
+      setLoading(false);
+      setSubmitted(true);
+    }, 800);
+  };
   return (
     <main>
       <PageHero 
@@ -26,54 +52,133 @@ export default function ContactPage() {
             <p className="mt-3 text-muted-foreground">Fill out the form below and our team will get back to you within 24 hours.</p>
           </div>
           
-          <form className="soft-card grid gap-6 p-8 md:p-10">
-            <div className="grid gap-6 md:grid-cols-2">
-              <label className="grid gap-2 text-sm font-semibold text-primary">
-                First Name
-                <input type="text" placeholder="John" className="rounded-md border border-border bg-background px-4 py-3.5 text-base outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent" />
-              </label>
-              <label className="grid gap-2 text-sm font-semibold text-primary">
-                Last Name
-                <input type="text" placeholder="Doe" className="rounded-md border border-border bg-background px-4 py-3.5 text-base outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent" />
-              </label>
+          {submitted ? (
+            <div className="soft-card grid gap-4 p-8 md:p-10 text-center bg-accent/5 border-accent/30">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent/20 text-accent">
+                <CheckCircle size={32} />
+              </div>
+              <h3 className="text-2xl font-display font-medium text-primary">Thank you! Message Sent</h3>
+              <p className="text-muted-foreground max-w-md mx-auto">
+                We have received your enquiry. Our solar advisory team will review your details and reach out within 24 hours.
+              </p>
+              <button
+                type="button"
+                onClick={() => setSubmitted(false)}
+                className="button-secondary mx-auto mt-4"
+              >
+                Send Another Message
+              </button>
             </div>
-            
-            <div className="grid gap-6 md:grid-cols-2">
-              <label className="grid gap-2 text-sm font-semibold text-primary">
-                Email Address
-                <input type="email" placeholder="john@example.com" className="rounded-md border border-border bg-background px-4 py-3.5 text-base outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent" />
-              </label>
-              <label className="grid gap-2 text-sm font-semibold text-primary">
-                Phone Number
-                <input type="tel" placeholder="+1 (555) 000-0000" className="rounded-md border border-border bg-background px-4 py-3.5 text-base outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent" />
-              </label>
-            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="soft-card grid gap-6 p-8 md:p-10">
+              <div className="grid gap-6 md:grid-cols-2">
+                <label className="grid gap-2 text-sm font-semibold text-primary">
+                  First Name *
+                  <input
+                    type="text"
+                    required
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    placeholder="John"
+                    className="rounded-md border border-border bg-background px-4 py-3.5 text-base outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent"
+                  />
+                </label>
+                <label className="grid gap-2 text-sm font-semibold text-primary">
+                  Last Name *
+                  <input
+                    type="text"
+                    required
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    placeholder="Doe"
+                    className="rounded-md border border-border bg-background px-4 py-3.5 text-base outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent"
+                  />
+                </label>
+              </div>
+              
+              <div className="grid gap-6 md:grid-cols-2">
+                <label className="grid gap-2 text-sm font-semibold text-primary">
+                  Email Address *
+                  <input
+                    type="email"
+                    required
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="john@example.com"
+                    className="rounded-md border border-border bg-background px-4 py-3.5 text-base outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent"
+                  />
+                </label>
+                <label className="grid gap-2 text-sm font-semibold text-primary">
+                  Phone Number *
+                  <input
+                    type="tel"
+                    required
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="+91 73382 68249"
+                    className="rounded-md border border-border bg-background px-4 py-3.5 text-base outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent"
+                  />
+                </label>
+              </div>
 
-            <div className="grid gap-6 md:grid-cols-2">
+              <div className="grid gap-6 md:grid-cols-2">
+                <label className="grid gap-2 text-sm font-semibold text-primary">
+                  City / Location
+                  <input
+                    type="text"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    placeholder="Your city"
+                    className="rounded-md border border-border bg-background px-4 py-3.5 text-base outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent"
+                  />
+                </label>
+                <label className="grid gap-2 text-sm font-semibold text-primary">
+                  Monthly electricity bill
+                  <select
+                    name="bill"
+                    value={formData.bill}
+                    onChange={handleChange}
+                    className="rounded-md border border-border bg-background px-4 py-3.5 text-base outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent"
+                  >
+                    <option>Under ₹5,000</option>
+                    <option>₹5,000 - ₹15,000</option>
+                    <option>₹15,000 - ₹30,000</option>
+                    <option>₹30,000+</option>
+                  </select>
+                </label>
+              </div>
+              
               <label className="grid gap-2 text-sm font-semibold text-primary">
-                City / Location
-                <input type="text" placeholder="Your city" className="rounded-md border border-border bg-background px-4 py-3.5 text-base outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent" />
+                Project Notes (Optional)
+                <textarea
+                  name="notes"
+                  value={formData.notes}
+                  onChange={handleChange}
+                  placeholder="Tell us a bit about your property or energy needs..."
+                  className="min-h-36 resize-y rounded-md border border-border bg-background px-4 py-3.5 text-base outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent"
+                />
               </label>
-              <label className="grid gap-2 text-sm font-semibold text-primary">
-                Monthly electricity bill
-                <select className="rounded-md border border-border bg-background px-4 py-3.5 text-base outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent">
-                  <option>Under $100</option>
-                  <option>$100 - $200</option>
-                  <option>$200 - $300</option>
-                  <option>$300+</option>
-                </select>
-              </label>
-            </div>
-            
-            <label className="grid gap-2 text-sm font-semibold text-primary">
-              Project Notes (Optional)
-              <textarea placeholder="Tell us a bit about your property or energy needs..." className="min-h-36 resize-y rounded-md border border-border bg-background px-4 py-3.5 text-base outline-none transition-colors focus:border-accent focus:ring-1 focus:ring-accent" />
-            </label>
-            
-            <button className="button-primary group mt-2 w-full justify-center py-4 text-base md:w-auto" type="button">
-              Submit Enquiry <ArrowRight size={18} className="button-arrow" />
-            </button>
-          </form>
+              
+              <button
+                type="submit"
+                disabled={loading}
+                className="button-primary group mt-2 w-full justify-center py-4 text-base md:w-auto disabled:opacity-60"
+              >
+                {loading ? (
+                  <>Sending...</>
+                ) : (
+                  <>
+                    Submit Enquiry <ArrowRight size={18} className="button-arrow" />
+                  </>
+                )}
+              </button>
+            </form>
+          )}
         </motion.div>
         
         <motion.div 
